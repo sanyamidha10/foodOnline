@@ -7,6 +7,11 @@ urlpatterns = [
 
     path('login/', views.login, name='login'),
     path('logout/', views.logout, name='logout'),
-    path('dashboard/', views.dashboard, name='dashboard'),
+    path('myAccount/', views.myAccount, name='myAccount'),
+    path('custDashboard/', views.custDashboard, name='custDashboard'),
+    path('vendorDashboard/', views.vendorDashboard, name='vendorDashboard'),
 
 ]
+
+
+#myAccount will decide which user is this vendor or customer, according to it, this will send user to customerDashboard or vendorDashboard

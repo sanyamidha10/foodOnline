@@ -2,6 +2,6 @@
 
 {% block content %}
 <h2>Welcome {{user.username}} </h2>
-
+<p>{{user.get_role}}</p>
 {% include "includes/alerts.html" %}
 {% endblock %}
