@@ -21,7 +21,18 @@ class UserProfileform(forms.ModelForm):
     #rather than ImageField, we use FileField if we use custom validators.
     profile_picture = forms.FileField(widget=forms.FileInput(attrs={'class': 'btn btn-info'}), validators=[allow_only_images_validator])
     cover_photo = forms.FileField(widget=forms.FileInput(attrs={'class': 'btn btn-info'}), validators=[allow_only_images_validator])
+
+    # One way of making fiels readonly:
+    # latitude = forms.CharField(widget=forms.TextInput(attrs={'readonly':'readonly'}))
+
     class Meta:
         model = UserProfile
         fields = ['profile_picture', 'cover_photo', 'address_line_1', 'address_line_2', 'country', 'state', 'city', 'pincode', 'latitude', 'longitude']
+
+    #2nd way of making fields readonly:
+    def __init__(self, *args, **kwargs):
+        super(UserProfileform, self).__init__(*args, **kwargs)
+        for field in self.fields:
+            if field == 'latitude' or field == 'longitude':
+                self.fields[field].widget.attrs['readonly'] = 'readonly'
 
