@@ -18,6 +18,7 @@ class UserForm(forms.ModelForm):
             raise forms.ValidationError('Passwords do not match!')
 
 class UserProfileform(forms.ModelForm):
+    address = forms.CharField(widget=forms.TextInput(attrs={'placeholder': 'Start typing...', 'required': 'required'}))
     #rather than ImageField, we use FileField if we use custom validators.
     profile_picture = forms.FileField(widget=forms.FileInput(attrs={'class': 'btn btn-info'}), validators=[allow_only_images_validator])
     cover_photo = forms.FileField(widget=forms.FileInput(attrs={'class': 'btn btn-info'}), validators=[allow_only_images_validator])
@@ -27,7 +28,7 @@ class UserProfileform(forms.ModelForm):
 
     class Meta:
         model = UserProfile
-        fields = ['profile_picture', 'cover_photo', 'address_line_1', 'address_line_2', 'country', 'state', 'city', 'pincode', 'latitude', 'longitude']
+        fields = ['profile_picture', 'cover_photo', 'address', 'country', 'state', 'city', 'pincode', 'latitude', 'longitude']
 
     #2nd way of making fields readonly:
     def __init__(self, *args, **kwargs):
