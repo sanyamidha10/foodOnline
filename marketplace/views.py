@@ -3,6 +3,7 @@ from menu.models import Category, FoodItem
 from vendor.models import Vendor
 from django.shortcuts import get_object_or_404
 from django.db.models import Prefetch
+from django.http import HttpResponse
 
 # Create your views here.
 def marketplace(request):
@@ -27,3 +28,7 @@ def vendor_detail(request, vendor_slug):
         'categories': categories,
     }
     return render(request, 'marketplace/vendor_detail.html', context)
+
+
+def add_to_cart(request, food_id):
+    return HttpResponse(food_id)
