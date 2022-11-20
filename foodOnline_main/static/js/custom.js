@@ -72,6 +72,7 @@ function onPlaceChanged() {
 // Add to cart
 
 $(document).ready(function() {
+    // Add to cart
     $('.add_to_cart').on("click", function(e) {
         e.preventDefault();
         food_id = $(this).attr('data-id');
@@ -85,11 +86,18 @@ $(document).ready(function() {
             url: url,
             data: data,
             success: function(response) {
-                $('#cart_counter').html(response.cart_counter['cart_count']);
-                $('#qty-' + food_id).html(response.qty);
+                if (response.status == 'login_required') {
+                    swal(response.message, '', 'info').then(function() {
+                        window.location = '/login';
+                    })
+                } else if (response.status == 'Failed') {
+                    swal(response.message, '', 'error')
+                } else {
+                    $('#cart_counter').html(response.cart_counter['cart_count']);
+                    $('#qty-' + food_id).html(response.qty);
+                }
             }
         })
-
     })
 
     // place the cart item quantity on load:
@@ -97,7 +105,33 @@ $(document).ready(function() {
         var the_id = $(this).attr('id');
         var qty = $(this).attr('data-qty');
         $('#' + the_id).html(qty);
+    })
 
+
+
+    // Decrease cart
+    $('.decrease_cart').on("click", function(e) {
+        e.preventDefault();
+        food_id = $(this).attr('data-id');
+        url = $(this).attr('data-url');
+
+        $.ajax({
+            type: 'GET',
+            url: url,
+            success: function(response) {
+                if (response.status == 'login_required') {
+                    swal(response.message, '', 'info').then(function() {
+                        window.location = '/login';
+                    })
+                } else if (response.status == 'Failed') {
+                    swal(response.message, '', 'error')
+                } else {
+                    $('#cart_counter').html(response.cart_counter['cart_count']);
+                    $('#qty-' + food_id).html(response.qty);
+                }
+
+            }
+        })
 
     })
 });
