@@ -56,6 +56,10 @@ class OpeningHour(models.Model):
     to_hour = models.CharField(choices=HOUR_OF_DAY_24, max_length=10, blank=True)
     is_closed = models.BooleanField(default=False)
 
+    def __str__(self):
+        return self.get_day_display()
+
+
     class Meta:
         ordering = ('day', 'from_hour')
         unique_together = ('day', 'from_hour', 'to_hour')
