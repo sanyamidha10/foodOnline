@@ -256,7 +256,7 @@ $(document).ready(function() {
                         document.getElementById('opening_hours').reset()
                     }
                     else{
-                        swal(response.status, '', "error")
+                        swal(response.message, '', "error")
                     }
 
                 }
