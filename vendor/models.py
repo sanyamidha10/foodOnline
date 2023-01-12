@@ -61,5 +61,5 @@ class OpeningHour(models.Model):
 
 
     class Meta:
-        ordering = ('day', 'from_hour')
-        unique_together = ('day', 'from_hour', 'to_hour')
+        ordering = ('day', '-from_hour')
+        unique_together = ('vendor', 'day', 'from_hour', 'to_hour')

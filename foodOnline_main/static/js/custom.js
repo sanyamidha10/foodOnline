@@ -211,7 +211,7 @@ $(document).ready(function() {
         }
     }
 
-
+// Add opening hour
     $('.add_hour').on('click', function(e){
         e.preventDefault();
         var day = document.getElementById('id_day').value;
@@ -245,11 +245,10 @@ $(document).ready(function() {
                 },
                 success: function(response){
                     if(response.status == 'success'){
-                        if (response.is_closed == 'Closed'){
-                            html = '<tr><td><b>'+response.day+'</b></td><td>Closed</td><td><a href="#">Remove</a></td></tr>'
-                        }
-                        else{
-                            html = '<tr><td><b>'+response.day+'</b></td><td>'+response.from_hour+'-'+response.to_hour+'</td><td><a href="#">Remove</a></td></tr>'   
+                        if(response.is_closed == 'Closed'){
+                            html = '<tr id="hour-'+response.id+'"><td><b>'+response.day+'</b></td><td>Closed</td><td><a href="#" class="remove_hour" data-url="/vendor/opening-hours/remove/'+response.id+'/">Remove</a></td></tr>';
+                        }else{
+                            html = '<tr id="hour-'+response.id+'"><td><b>'+response.day+'</b></td><td>'+response.from_hour+' - '+response.to_hour+'</td><td><a href="#" class="remove_hour" data-url="/vendor/opening-hours/remove/'+response.id+'/">Remove</a></td></tr>';
                         }
                     
                         $(".opening_hours").append(html)
@@ -266,6 +265,41 @@ $(document).ready(function() {
         else{
             swal('Please fill all fields', '', 'info');
         }
+    })
+
+
+    // Remove opening hour
+    // $('.remove_hour').on('click', function(e){
+    //     e.preventDefault();
+    //     url = $(this).attr('data-url');
+
+    //     $.ajax({
+    //         type:'GET',
+    //         url: url,
+    //         success: function(response){
+    //             if(response.status=='success'){
+    //                 document.getElementById('hour-'+response.id).remove();
+    //             }
+
+    //         }
+    //     })
+
+    // })
+
+    $(document).on('click', '.remove_hour', function(e){
+        e.preventDefault();
+        url = $(this).attr('data-url');
+
+        $.ajax({
+            type:'GET',
+            url: url,
+            success: function(response){
+                if(response.status=='success'){
+                    document.getElementById('hour-'+response.id).remove();
+                }
+
+            }
+        })
     })
 
 });
