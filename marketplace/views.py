@@ -42,6 +42,7 @@ def vendor_detail(request, vendor_slug):
     print(now)
     current_time = now.strftime('%H:%M:%S')
     print(current_time)
+    # it is printing 5hours 30 mins before time. 
     
 
     # is_open = None
