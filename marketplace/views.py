@@ -35,28 +35,11 @@ def vendor_detail(request, vendor_slug):
     )
 
     opening_hours = OpeningHour.objects.filter(vendor=vendor).order_by('day', '-from_hour')
+    
     today_date = date.today()
     today = today_date.isoweekday()
     current_opening_hour = OpeningHour.objects.filter(vendor=vendor, day=today)
-    now = datetime.now()
-    print(now)
-    current_time = now.strftime('%H:%M:%S')
-    # it is printing 5hours 30 mins before time. 
     
-
-    # is_open = None
-    # for i in current_opening_hour:
-    #     start = str(datetime.strptime(i.from_hour, '%I:%M %p').time())
-    #     end = str(datetime.strptime(i.to_hour, '%I:%M %p').time())
-
-    #     if current_time > start and current_time < end:
-    #         is_open = True
-    #     else:
-    #         is_open = False
-
-
-
-
     if request.user.is_authenticated:
         cart_items = Cart.objects.filter(user=request.user)
     else:
@@ -68,7 +51,6 @@ def vendor_detail(request, vendor_slug):
         'cart_items': cart_items,
         'opening_hours': opening_hours,
         'current_opening_hour': current_opening_hour,
-        # 'is_open': is_open,
     }
     return render(request, 'marketplace/vendor_detail.html', context)
 
