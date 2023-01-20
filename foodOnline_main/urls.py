@@ -30,5 +30,7 @@ urlpatterns = [
     # Cart
    path('cart/', MarketplaceViews.cart, name='cart'),
    path('search/', MarketplaceViews.search, name='search'),
+   
+   path('checkout/', MarketplaceViews.checkout, name='checkout'),
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
