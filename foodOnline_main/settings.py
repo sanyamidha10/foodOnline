@@ -170,3 +170,4 @@ EMAIL_USE_TLS = True
 DEFAULT_FROM_EMAIL = 'FoodOnline Marketplace <foodon13@gmail.com>'
 
 GOOGLE_API_KEY = config('GOOGLE_API_KEY')
+PAYPAL_CLIENT_ID=config('PAYPAL_CLIENT_ID')
