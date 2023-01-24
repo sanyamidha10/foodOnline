@@ -3,7 +3,7 @@ from django.shortcuts import render, redirect
 from marketplace.models import Cart
 from marketplace.context_processors import get_cart_amounts
 from orders.forms import OrderForm
-from orders.models import Order, Payment
+from orders.models import Order, Payment, OrderedFood
 import simplejson as json
 from .utils import generate_order_number
 
@@ -55,6 +55,7 @@ def place_order(request):
 def payments(request):
     # CHECK IF REQUEST IS AJAX OR NOT
     if request.headers.get('x-requested-with') == 'XMLHttpRequest' and request.method == 'POST':
+
         # STORE THE PAYMENT DETAILS IN THE PAYMENT MODEL
         order_number = request.POST.get('order_number')
         transaction_id = request.POST.get('transaction_id')
@@ -70,14 +71,27 @@ def payments(request):
             status = status
         )
         payment.save()
+
         # UPDATE THE ORDER MODEL
         order.payment = payment
         order.is_ordered = True
         order.save()
-        return HttpResponse('saved')
-
-
+        
         # MOVE THE CART ITEMS TO ORDERED FOOD MODEL
+        cart_items = Cart.objects.filter(user=request.user)
+        for item in cart_items:
+            ordered_food = OrderedFood()
+            ordered_food.order = order
+            ordered_food.payment = payment
+            ordered_food.user = request.user
+            ordered_food.fooditem = item.fooditem
+            ordered_food.quantity = item.quantity
+            ordered_food.price = item.fooditem.price
+            ordered_food.amount = item.fooditem.price * item.quantity
+            ordered_food.save()
+        return HttpResponse('saved ordered food')
+
+
 
         # SEND ORDER CONFIRMATION EMAIL TO THE CUSTOMER
 
