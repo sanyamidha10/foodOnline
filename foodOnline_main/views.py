@@ -1,7 +1,6 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from vendor.models import Vendor
-
 from .utils import get_or_set_current_location
 
 from django.contrib.gis.geos import GEOSGeometry
