@@ -12,6 +12,7 @@ from menu.models import Category, FoodItem
 from .utils import get_vendor
 from menu.forms import CategoryForm, FoodItemForm
 from django.template.defaultfilters import slugify
+from orders.models import Order, OrderedFood
 
 # Create your views here.
 
@@ -226,3 +227,13 @@ def remove_opening_hours(request, pk=None):
             hour = get_object_or_404(OpeningHour, pk=pk)
             hour.delete()
             return JsonResponse({'status':'success', 'id':pk})
+
+def order_detail(request, order_number):
+    order = Order.objects.get(is_ordered=True, order_number = order_number)
+    ordered_food = OrderedFood.objects.filter(order=order, fooditem__vendor = get_vendor(request))
+
+    context = {
+        'order': order,
+        'ordered_food': ordered_food,
+    }
+    return render(request, 'vendor/order_detail.html', context)

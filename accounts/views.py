@@ -186,7 +186,7 @@ def custDashboard(request):
 @user_passes_test(check_role_vendor)
 def vendorDashboard(request):
     vendor = Vendor.objects.get(user=request.user)
-    orders = Order.objects.filter(vendor__in=[vendor.id], is_ordered=True).order_by('-created_at')
+    orders = Order.objects.filter(vendor__id__in=[vendor.id], is_ordered=True).order_by('-created_at')
     recent_orders = orders[:5]
     context={
         'orders':orders,

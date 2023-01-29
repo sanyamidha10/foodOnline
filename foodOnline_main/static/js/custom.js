@@ -227,8 +227,6 @@ $(document).ready(function() {
         var csrf_token = $('input[name=csrfmiddlewaretoken]').val();
         var url = document.getElementById('add_hour_url').value;
 
-        console.log(day, from_hour, to_hour, is_closed, csrf_token);
-
         if(is_closed){
             is_closed = 'True'
             condition = "day!=''"
