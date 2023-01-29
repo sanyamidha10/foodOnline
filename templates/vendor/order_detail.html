@@ -80,11 +80,11 @@
                                                             Subtotal
                                                             <span class="price float-right">
                                                                 <span class="currency">$</span>
-                                                                <span id="subtotal">{{ subtotal }}</span>
+                                                                <span id="subtotal">{{ order.get_total_by_vendor.subtotal }}</span>
                                                             </span>
                                                         </li>
                             
-                                                        {% for key, value in tax_data.items %}
+                                                        {% for key, value in order.get_total_by_vendor.tax_dict.items %}
                                                             {% for i, j in value.items %}
                                                                 <li style="list-style-type: none;">
                                                                     {{ key }} <small>({{ i }}%)</small>
@@ -101,7 +101,7 @@
                                                             TOTAL
                                                             <span class="price float-right">
                                                                 <span class="currency">$</span>
-                                                                <span id="total">{{ order.total }}</span>
+                                                                <span id="total">{{ order.get_total_by_vendor.grand_total }}</span>
                                                             </span>
                                                         </li>
                                                     </ul>
