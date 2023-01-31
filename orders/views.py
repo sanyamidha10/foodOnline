@@ -12,6 +12,7 @@ from accounts.utils import send_notification
 from django.contrib.auth.decorators import login_required
 import razorpay
 from foodOnline_main.settings import RAZORPAY_API_KEY_ID, RAZORPAY_API_KEY_SECRET
+from django.contrib.sites.shortcuts import get_current_site
 
 
 client = razorpay.Client(auth=(RAZORPAY_API_KEY_ID, RAZORPAY_API_KEY_SECRET))
@@ -158,10 +159,20 @@ def payments(request):
         # SEND ORDER CONFIRMATION EMAIL TO THE CUSTOMER
         mail_subject = 'Thank you for ordering with us.'
         mail_template = 'orders/order_confirmation_email.html'
+
+        ordered_food = OrderedFood.objects.filter(order=order)
+        customer_subtotal = 0
+        for item in ordered_food:
+            customer_subtotal += (item.price * item.quantity)
+        tax_data = json.loads(order.tax_data)
         context = {
             'user': request.user,
             'order': order,
-            'to_email': order.email
+            'to_email': order.email,
+            'ordered_food': ordered_food,
+            'domain': get_current_site(request),
+            'customer_subtotal': customer_subtotal,
+            'tax_data': tax_data,
         }
         send_notification(mail_subject, mail_template, context)
         
@@ -173,7 +184,6 @@ def payments(request):
             if i.fooditem.vendor.user.email not in to_emails:
                 to_emails.append(i.fooditem.vendor.user.email)
 
-        print('to_emails==>', to_emails)
         context={
             'order': order,
             'to_email': to_emails,
