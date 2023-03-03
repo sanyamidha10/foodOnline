@@ -135,8 +135,10 @@ def add_food(request):
             food_title = form.cleaned_data['food_title']
             food = form.save(commit=False)
             food.vendor = get_vendor(request)
-            food.slug = slugify(food_title)
-            form.save()
+            # food.slug = slugify(food_title)
+            food.save()
+            food.slug = slugify(food_title)+'-'+str(food.id)
+            food.save()
             messages.success(request, 'Food Item added successfully')
             return redirect('fooditems_by_category', food.category.id)
 
